@@ -99,6 +99,7 @@ dependencies {
     implementation(Libs.hilt_android)
     kapt(Libs.hilt_android_compiler)
     kapt(Libs.hilt_compiler)
+    implementation(AndroidX.Hilt.work)
 
     implementation(Libs.play_services_ads)
 

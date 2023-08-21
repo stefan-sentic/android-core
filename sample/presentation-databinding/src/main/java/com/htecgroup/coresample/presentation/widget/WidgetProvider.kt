@@ -12,11 +12,11 @@ import com.htecgroup.androidcore.domain.extension.TAG
 import com.htecgroup.coresample.presentation.R
 import kotlin.random.Random
 
-
 class WidgetProvider : AppWidgetProvider() {
 
     companion object {
-        private val ACTION_REFRESH = "$TAG.refresh"
+        const val ACTION_REFRESH = ".widget.WidgetProvider.refresh"
+        const val ACTION_DATA = ".widget.WidgetProvider.data"
     }
 
     private val customActions = listOf(ACTION_REFRESH)
@@ -27,16 +27,25 @@ class WidgetProvider : AppWidgetProvider() {
         if (intent?.action in customActions) onCustomAction(context, intent)
     }
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
         Log.d(TAG, "onUpdate: ")
         appWidgetIds.forEach { widgetId ->
             appWidgetManager.updateAppWidget(widgetId, context.getRemoteView(widgetId))
         }
     }
 
-    override fun onAppWidgetOptionsChanged(ctx: Context, manager: AppWidgetManager, widgetId: Int, options: Bundle?) {
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        manager: AppWidgetManager,
+        widgetId: Int,
+        options: Bundle?
+    ) {
         Log.d(TAG, "onAppWidgetOptionsChanged: ")
-        ctx.publishRemoteView(ctx.getRemoteView(widgetId), widgetId)
+        context.publishRemoteView(context.getRemoteView(widgetId), widgetId)
     }
 
     private fun onCustomAction(context: Context, intent: Intent?) {

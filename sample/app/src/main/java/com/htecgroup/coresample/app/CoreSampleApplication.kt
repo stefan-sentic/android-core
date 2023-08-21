@@ -16,6 +16,8 @@
 
 package com.htecgroup.coresample.app
 
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.google.android.gms.ads.MobileAds
 import com.htecgroup.androidcore.presentation.CoreApplication
 import com.htecgroup.androidcore.presentation.viewmodel.ViewModelIdProvider
@@ -24,10 +26,12 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class CoreSampleApplication : CoreApplication() {
+class CoreSampleApplication : CoreApplication(), Configuration.Provider {
 
     @Inject
     lateinit var notificationController: NotificationController
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
     init {
         app = this
@@ -46,6 +50,11 @@ class CoreSampleApplication : CoreApplication() {
     }
 
     override fun enableMultiDex() = true
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
 
     /**
      * #DataBindingSample
