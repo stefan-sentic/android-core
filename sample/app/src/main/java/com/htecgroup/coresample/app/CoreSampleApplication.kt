@@ -18,6 +18,7 @@ package com.htecgroup.coresample.app
 
 import com.google.android.gms.ads.MobileAds
 import com.htecgroup.androidcore.presentation.CoreApplication
+import com.htecgroup.androidcore.presentation.viewmodel.ViewModelIdProvider
 import com.htecgroup.coresample.domain.service.NotificationController
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -50,11 +51,9 @@ class CoreSampleApplication : CoreApplication() {
      * #DataBindingSample
      * Uncomment the function [CoreSampleApplication.initViewModelId] to enable Data Binding sample
      */
-    /*
     public override fun initViewModelId() {
         ViewModelIdProvider.viewModelId = BR.vm
     }
-    */
 
     companion object {
         lateinit var app: CoreSampleApplication

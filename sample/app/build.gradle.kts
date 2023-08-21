@@ -93,7 +93,7 @@ dependencies {
      * Change with the following line to enable databinding example
      * implementation(project(Config.Module.presentationDatabinding))
      */
-    implementation(project(Config.Module.presentation))
+    implementation(project(Config.Module.presentationDatabinding))
 
     // Hilt
     implementation(Libs.hilt_android)
