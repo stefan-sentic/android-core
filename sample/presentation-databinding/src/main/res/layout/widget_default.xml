@@ -45,7 +45,7 @@
 		android:layout_marginTop="8dp"
 		android:layout_width="match_parent"
 		android:maxLines="4"
-		android:textColor="?android:attr/colorPrimaryDark"
+		android:textColor="?android:attr/colorPrimary"
 		android:textSize="16sp"
 		android:textStyle="bold"
 		tools:text="Post description" />

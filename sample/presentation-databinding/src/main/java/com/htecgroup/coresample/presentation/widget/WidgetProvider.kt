@@ -35,8 +35,7 @@ class WidgetProvider : AppWidgetProvider() {
         const val ACTION_REFRESH = ".widget.WidgetProvider.refresh"
         const val ACTION_DATA = ".widget.WidgetProvider.data"
         const val EXTRA_POST = ".widget.WidgetProvider.extra.post"
-        private const val TAG_PERIODIC_WORK = "periodic"
-        private const val TAG_ONETIME_WORK = "onetime"
+        private const val PERIODIC_WORK_ID_PREFIX = "periodic_work_"
     }
 
     private val customActions = listOf(ACTION_REFRESH, ACTION_DATA)
@@ -64,6 +63,15 @@ class WidgetProvider : AppWidgetProvider() {
         appWidgetIds.forEach { widgetId ->
             appWidgetManager.updateAppWidget(widgetId, context.getRemoteView(widgetId))
             setupWidgetRefreshingWork(context, widgetId)
+        }
+    }
+
+    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
+        context?.let {
+            appWidgetIds?.forEach { widgetId ->
+                WorkManager.getInstance(it)
+                    .cancelUniqueWork(widgetId.asPeriodicWorkName)
+            }
         }
     }
 
@@ -131,11 +139,10 @@ class WidgetProvider : AppWidgetProvider() {
             .setInputData(
                 Data.Builder().putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId).build()
             )
-            .addTag(TAG_PERIODIC_WORK)
             .build()
 
         WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork("periodic_work_$widgetId", CANCEL_AND_REENQUEUE, work)
+            .enqueueUniquePeriodicWork(widgetId.asPeriodicWorkName, CANCEL_AND_REENQUEUE, work)
     }
 
     private fun getDataForWidget(context: Context, widgetId: Int) {
@@ -146,7 +153,6 @@ class WidgetProvider : AppWidgetProvider() {
             .setInputData(
                 Data.Builder().putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId).build()
             )
-            .addTag(TAG_ONETIME_WORK)
             .build()
 
         WorkManager.getInstance(context)
@@ -162,7 +168,7 @@ class WidgetProvider : AppWidgetProvider() {
         val btnPendingIntent =
             PendingIntent.getBroadcast(
                 this,
-                1,
+                widgetId + 1,
                 Intent(this, WidgetProvider::class.java).apply {
                     action = ACTION_REFRESH
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
@@ -173,7 +179,7 @@ class WidgetProvider : AppWidgetProvider() {
         val bgdPendingIntent =
             PendingIntent.getActivity(
                 this,
-                2,
+                widgetId + 2,
                 Intent(this, PostsActivity::class.java)
                     .apply {
                         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
@@ -186,4 +192,7 @@ class WidgetProvider : AppWidgetProvider() {
             setOnClickPendingIntent(R.id.txt_title, bgdPendingIntent)
         }
     }
+
+    private val Int.asPeriodicWorkName
+        get() = "$PERIODIC_WORK_ID_PREFIX$this"
 }
