@@ -22,6 +22,7 @@ import androidx.work.WorkManager
 import com.htecgroup.androidcore.domain.extension.TAG
 import com.htecgroup.coresample.presentation.R
 import com.htecgroup.coresample.presentation.post.PostView
+import com.htecgroup.coresample.presentation.post.PostsActivity
 import com.htecgroup.coresample.presentation.post.random.PostWidgetWorker
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -173,7 +174,7 @@ class WidgetProvider : AppWidgetProvider() {
             PendingIntent.getActivity(
                 this,
                 2,
-                Intent(this, WidgetConfigurationActivity::class.java)
+                Intent(this, PostsActivity::class.java)
                     .apply {
                         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
                     },
@@ -182,7 +183,7 @@ class WidgetProvider : AppWidgetProvider() {
 
         return RemoteViews(this.packageName, R.layout.widget_default).apply {
             setOnClickPendingIntent(R.id.btn_action, btnPendingIntent)
-            setOnClickPendingIntent(android.R.id.background, bgdPendingIntent)
+            setOnClickPendingIntent(R.id.txt_title, bgdPendingIntent)
         }
     }
 }

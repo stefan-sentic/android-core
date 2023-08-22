@@ -29,6 +29,7 @@
 
 		<activity
 			android:name="com.htecgroup.coresample.presentation.post.PostsActivity"
+			android:launchMode="singleInstance"
 			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

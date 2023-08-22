@@ -28,11 +28,11 @@
 	<string name="no_title">No title</string>
 	<string name="no_description">No description</string>
 	<string name="no_body">No body</string>
-
 	<string name="title_posts_list">List of posts</string>
 	<string name="title_post_details">Post details</string>
 	<string name="title_add_post">Add post</string>
 	<string name="title_edit_post">Edit post</string>
 	<string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 	<string name="default_notification_channel_name">Core default channel</string>
+	<string name="widget_xml_description">Android Core XML Widget</string>
 </resources>
