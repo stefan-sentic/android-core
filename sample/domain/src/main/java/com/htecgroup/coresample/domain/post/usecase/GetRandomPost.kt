@@ -20,6 +20,7 @@ import com.htecgroup.androidcore.domain.CoreUseCase
 import com.htecgroup.androidcore.domain.IUseCase
 import com.htecgroup.coresample.domain.post.Post
 import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -30,7 +31,8 @@ class GetRandomPost @Inject constructor(
     override suspend fun invoke(): Result<Post> {
         val postId = Random.nextInt(from = 1, until = 100)
 
-        val postResult = retrievePost.invoke(postId).lastOrNull()
+        val postResult = retrievePost(postId).take(1).lastOrNull()
+
         return if (postResult?.getOrNull() == null) {
             Result.failure(IllegalStateException("Unknown exception. The post was null."))
         } else {

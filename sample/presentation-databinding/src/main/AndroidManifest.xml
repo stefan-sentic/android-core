@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2023 HTEC Group Inc.
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -11,15 +10,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<manifest package="com.htecgroup.coresample.presentation"
-	xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	package="com.htecgroup.coresample.presentation">
 
 	<uses-permission android:name="android.permission.INTERNET" />
 
 	<application>
 		<receiver
-			android:name=".widget.WidgetProvider"
-			android:exported="true">
+			android:exported="true"
+			android:name=".widget.WidgetProvider">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
@@ -27,6 +27,17 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/widget_provider_info" />
 		</receiver>
+
+		<provider
+			android:authorities="${applicationId}.androidx-startup"
+			android:exported="false"
+			android:name="androidx.startup.InitializationProvider"
+			tools:node="merge">
+			<meta-data
+				android:name="androidx.work.WorkManagerInitializer"
+				android:value="androidx.startup"
+				tools:node="remove" />
+		</provider>
 	</application>
 
 </manifest>

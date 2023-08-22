@@ -45,6 +45,8 @@ public object Libs {
 
     public const val hilt_navigation_compose: String = "androidx.hilt:hilt-navigation-compose:_"
 
+    public const val hilt_work: String = "androidx.hilt:hilt-work:_"
+
     public const val lifecycle_viewmodel_compose: String =
             "androidx.lifecycle:lifecycle-viewmodel-compose:_"
 
