@@ -41,7 +41,7 @@ public object Libs {
 
     public const val viewbinding: String = "androidx.databinding:viewbinding:_"
 
-    public const val hilt_compiler: String = "androidx.hilt:hilt-compiler:_"
+    public const val androidx_hilt_hilt_compiler: String = "androidx.hilt:hilt-compiler:_"
 
     public const val hilt_navigation_compose: String = "androidx.hilt:hilt-navigation-compose:_"
 
@@ -91,6 +91,19 @@ public object Libs {
     public const val hilt_android_gradle_plugin: String =
             "com.google.dagger:hilt-android-gradle-plugin:_"
 
+    public const val com_google_dagger_hilt_compiler: String = "com.google.dagger:hilt-compiler:_"
+
+    public const val com_google_devtools_ksp_gradle_plugin: String =
+            "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:_"
+
+    public const val symbol_processing: String = "com.google.devtools.ksp:symbol-processing:_"
+
+    public const val symbol_processing_api: String =
+            "com.google.devtools.ksp:symbol-processing-api:_"
+
+    public const val symbol_processing_cmdline: String =
+            "com.google.devtools.ksp:symbol-processing-cmdline:_"
+
     public const val firebase_analytics_ktx: String = "com.google.firebase:firebase-analytics-ktx"
 
     public const val firebase_appdistribution_gradle: String =
@@ -138,8 +151,6 @@ public object Libs {
     public const val mockk: String = "io.mockk:mockk:_"
 
     public const val kluent_android: String = "org.amshove.kluent:kluent-android:_"
-
-    public const val org_jacoco_ant: String = "org.jacoco:org.jacoco.ant:_"
 
     public const val kotlin_annotation_processing_gradle: String =
             "org.jetbrains.kotlin:kotlin-annotation-processing-gradle:_"

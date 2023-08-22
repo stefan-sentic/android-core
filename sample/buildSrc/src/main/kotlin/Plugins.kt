@@ -23,6 +23,7 @@ object Plugins {
 	const val kotlinParcelize = "kotlin-parcelize"
 	const val kotlinJvm = "kotlin"
 	const val kapt = "kapt"
+	const val ksp = "com.google.devtools.ksp"
 
 	const val junit5 = "de.mannodermaus.android-junit5"
 	const val firebaseAppDistribution = "com.google.firebase.appdistribution"

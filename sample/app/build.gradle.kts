@@ -27,6 +27,7 @@ apply(from = Config.CoreSample.detekt)
 
 android {
     compileSdk = Config.CoreSample.compileSdkVersion
+    namespace = "${Config.CoreSample.applicationId}.app"
 
     defaultConfig {
         applicationId = Config.CoreSample.applicationId
@@ -80,6 +81,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         dataBinding = true
         viewBinding = true
     }
@@ -93,13 +95,13 @@ dependencies {
      * Change with the following line to enable databinding example
      * implementation(project(Config.Module.presentationDatabinding))
      */
-    implementation(project(Config.Module.presentationDatabinding))
+    implementation(project(Config.Module.presentation))
 
     // Hilt
     implementation(Libs.hilt_android)
     kapt(Libs.hilt_android_compiler)
     implementation(Libs.hilt_work)
-    kapt(Libs.hilt_compiler)
+    kapt(Libs.androidx_hilt_hilt_compiler)
 
     implementation(Libs.play_services_ads)
 
