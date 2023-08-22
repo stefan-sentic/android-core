@@ -1,37 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:background="?android:attr/colorBackground"
 	android:gravity="center"
 	android:id="@android:id/background"
 	android:layout_height="match_parent"
-	android:layout_width="match_parent"
-	android:orientation="vertical">
+	android:layout_width="match_parent">
+
+	<TextView
+		android:id="@+id/txt_time"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentTop="true"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="8dp"
+		android:layout_marginTop="8dp"
+		android:layout_width="wrap_content"
+		android:textColor="?android:attr/colorPrimaryDark"
+		android:textSize="10sp"
+		android:textStyle="bold|italic"
+		tools:text="12:34" />
 
 	<TextView
 		android:id="@+id/txt_title"
+		android:layout_alignParentTop="true"
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:text="@string/title"
+		android:layout_marginBottom="12dp"
+		android:layout_marginEnd="16dp"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="20dp"
+		android:layout_width="match_parent"
 		android:textColor="?android:attr/colorAccent"
-		android:textSize="16sp" />
+		android:textSize="18sp"
+		android:textStyle="bold"
+		tools:text="Post title" />
 
 	<TextView
 		android:ellipsize="end"
 		android:id="@+id/txt_description"
+		android:layout_below="@id/txt_title"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="32dp"
-		android:layout_width="wrap_content"
+		android:layout_marginHorizontal="16dp"
+		android:layout_marginTop="8dp"
+		android:layout_width="match_parent"
 		android:maxLines="5"
-		android:text="@string/no_description"
-		android:textColor="?android:attr/colorAccent" />
+		android:textColor="?android:attr/colorPrimaryDark"
+		android:textSize="16sp"
+		android:textStyle="bold"
+		tools:text="Post description" />
 
-	<Button
-		android:background="?android:attr/colorAccent"
-		android:id="@+id/btn_action"
+	<TextView
+		android:background="@drawable/bg_widget_label"
+		android:id="@+id/txt_user_author"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentStart="true"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="16dp"
+		android:layout_marginBottom="8dp"
+		android:layout_marginEnd="8dp"
+		android:layout_marginHorizontal="16dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
 		android:layout_width="wrap_content"
-		android:text="@string/reload"
+		android:paddingHorizontal="6dp"
+		android:paddingVertical="1dp"
+		android:textColor="?android:attr/textColorPrimary"
+		android:textSize="18sp"
+		android:textStyle="bold"
+		tools:ignore="RelativeOverlap"
+		tools:text="John Doe" />
+
+	<ImageButton
+		android:background="@drawable/bg_widget_button"
+		android:id="@+id/btn_action"
+		android:importantForAccessibility="no"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentEnd="true"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:layout_marginEnd="8dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
+		android:layout_width="wrap_content"
+		android:padding="4dp"
+		android:src="@drawable/ic_refresh"
 		android:textColor="?android:attr/colorPrimary" />
 
-</LinearLayout>
+</RelativeLayout>

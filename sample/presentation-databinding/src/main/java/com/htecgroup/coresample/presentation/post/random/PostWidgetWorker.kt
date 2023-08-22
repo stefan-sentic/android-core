@@ -33,6 +33,7 @@ class PostWidgetWorker @AssistedInject constructor(
                 updateWidget(postResult.getOrNull()?.toPostView(), widgetId = params.widgetId)
                 Result.success()
             } else {
+                updateWidget(null, widgetId = params.widgetId)
                 Result.failure()
             }
         }
