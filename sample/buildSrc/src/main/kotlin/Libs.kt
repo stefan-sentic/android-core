@@ -41,6 +41,8 @@ public object Libs {
 
     public const val viewbinding: String = "androidx.databinding:viewbinding:_"
 
+    public const val glance_appwidget: String = "androidx.glance:glance-appwidget:_"
+
     public const val androidx_hilt_hilt_compiler: String = "androidx.hilt:hilt-compiler:_"
 
     public const val hilt_navigation_compose: String = "androidx.hilt:hilt-navigation-compose:_"
@@ -162,8 +164,6 @@ public object Libs {
 
     public const val kotlin_parcelize_runtime: String =
             "org.jetbrains.kotlin:kotlin-parcelize-runtime:_"
-
-    public const val kotlin_stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib:_"
 
     public const val kotlinx_coroutines_android: String =
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:_"

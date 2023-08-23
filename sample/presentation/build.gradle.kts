@@ -91,6 +91,7 @@ dependencies {
     implementation(Libs.ui_tooling_preview)
     implementation(Libs.ui_tooling)
     implementation(Libs.accompanist_swiperefresh)
+	implementation(Libs.glance_appwidget)
 
     // Hilt
     implementation(Libs.hilt_android)
