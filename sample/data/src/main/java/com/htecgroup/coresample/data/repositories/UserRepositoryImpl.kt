@@ -24,6 +24,7 @@ import com.htecgroup.androidcore.domain.extension.toUnitResult
 import com.htecgroup.coresample.data.db.dao.UserDao
 import com.htecgroup.coresample.data.db.entities.toUser
 import com.htecgroup.coresample.data.network.api.UserApi
+import com.htecgroup.coresample.data.network.entities.toUser
 import com.htecgroup.coresample.data.network.entities.toUserEntity
 import com.htecgroup.coresample.domain.user.User
 import com.htecgroup.coresample.domain.user.UserRepository
@@ -41,6 +42,10 @@ class UserRepositoryImpl
     override fun getUsers(): Flow<Result<List<User>>> =
         userDao.getAll()
             .mapWrapListResult { it.toUser() }
+
+    override suspend fun getUserFromNetwork(userId: Int): Result<User> =
+        safeApiCall { userApi.getUser(userId) }
+            .map { it.toUser() }
 
     override fun getUser(userId: Int): Flow<Result<User>> =
         userDao.get(userId)

@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
 
+    suspend fun getPostFromNetwork(postId: Int): Result<Post>
+
     fun getPosts(): Flow<Result<List<Post>?>>
 
     suspend fun removePosts(): Result<Unit>

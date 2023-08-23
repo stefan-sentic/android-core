@@ -17,6 +17,7 @@
 package com.htecgroup.coresample.data.network.entities
 
 import com.htecgroup.coresample.data.db.entities.UserEntity
+import com.htecgroup.coresample.domain.user.User
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -39,6 +40,14 @@ fun UserRaw.toUserEntity() =
         id = id,
         name = name ?: "",
         username = username ?: "",
+        email = email ?: "",
+        phone = phone ?: ""
+    )
+
+fun UserRaw.toUser() =
+    User(
+        id = id,
+        name = name ?: "",
         email = email ?: "",
         phone = phone ?: ""
     )

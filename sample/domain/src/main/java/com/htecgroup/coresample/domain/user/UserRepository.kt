@@ -24,6 +24,8 @@ interface UserRepository {
 
     fun getUser(userId: Int): Flow<Result<User>>
 
+    suspend fun getUserFromNetwork(userId: Int): Result<User>
+
     suspend fun fetchUsers(): Result<Unit>
 
     suspend fun fetchUser(userId: Int): Result<Unit>

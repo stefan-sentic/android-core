@@ -17,7 +17,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.htecgroup.androidcore.domain.extension.TAG
-import com.htecgroup.coresample.domain.post.usecase.GetRandomPost
+import com.htecgroup.coresample.domain.post.usecase.GetRandomPostFromNetwork
 import com.htecgroup.coresample.presentation.post.PostView
 import com.htecgroup.coresample.presentation.post.toPostView
 import dagger.assisted.Assisted
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit.MINUTES
 class PostGlanceWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val params: WorkerParameters,
-    private val getRandomPost: GetRandomPost
+    private val getRandomPost: GetRandomPostFromNetwork
 ) : CoroutineWorker(context, params) {
 
     companion object {

@@ -26,6 +26,7 @@ import com.htecgroup.coresample.data.db.entities.PostEntity
 import com.htecgroup.coresample.data.db.entities.toPost
 import com.htecgroup.coresample.data.db.entities.toPostEntity
 import com.htecgroup.coresample.data.network.api.PostApi
+import com.htecgroup.coresample.data.network.entities.toPost
 import com.htecgroup.coresample.data.network.entities.toPostEntity
 import com.htecgroup.coresample.data.network.entities.toPostRaw
 import com.htecgroup.coresample.domain.post.Post
@@ -44,6 +45,10 @@ class PostRepositoryImpl @Inject constructor(
         postDao.getAll().mapWrapListResult { it.toPost() }
 
     override suspend fun removePosts(): Result<Unit> = safeDbCall { postDao.deleteAll() }
+
+    override suspend fun getPostFromNetwork(postId: Int): Result<Post> =
+        safeApiCall { postApi.getPost(postId) }
+            .map { it.toPost() }
 
     override fun getPost(postId: Int): Flow<Result<Post?>> =
         postDao.get(postId.toLong()).mapWrapResult { it?.toPost() }
