@@ -18,7 +18,7 @@
 	<application>
 		<receiver
 			android:exported="true"
-			android:name=".widget.WidgetProvider">
+			android:name=".post.widget.WidgetProvider">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>

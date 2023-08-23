@@ -1,4 +1,4 @@
-package com.htecgroup.coresample.presentation.widget
+package com.htecgroup.coresample.presentation.post.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -23,7 +23,6 @@ import com.htecgroup.androidcore.domain.extension.TAG
 import com.htecgroup.coresample.presentation.R
 import com.htecgroup.coresample.presentation.post.PostView
 import com.htecgroup.coresample.presentation.post.PostsActivity
-import com.htecgroup.coresample.presentation.post.random.PostWidgetWorker
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -66,12 +65,10 @@ class WidgetProvider : AppWidgetProvider() {
         }
     }
 
-    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        context?.let {
-            appWidgetIds?.forEach { widgetId ->
-                WorkManager.getInstance(it)
-                    .cancelUniqueWork(widgetId.asPeriodicWorkName)
-            }
+    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        appWidgetIds.forEach { widgetId ->
+            WorkManager.getInstance(context)
+                .cancelUniqueWork(widgetId.asPeriodicWorkName)
         }
     }
 

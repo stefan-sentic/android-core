@@ -96,6 +96,7 @@ dependencies {
     // Hilt
     implementation(Libs.hilt_android)
     kapt(Libs.hilt_android_compiler)
+    implementation(Libs.hilt_work)
     kapt(Libs.androidx_hilt_hilt_compiler)
 
     implementation(Libs.play_services_ads)

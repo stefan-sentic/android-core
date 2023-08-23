@@ -1,4 +1,4 @@
-package com.htecgroup.coresample.presentation.post.random
+package com.htecgroup.coresample.presentation.post.widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -11,7 +11,6 @@ import com.htecgroup.androidcore.domain.extension.TAG
 import com.htecgroup.coresample.domain.post.usecase.GetRandomPost
 import com.htecgroup.coresample.presentation.post.PostView
 import com.htecgroup.coresample.presentation.post.toPostView
-import com.htecgroup.coresample.presentation.widget.WidgetProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
@@ -45,8 +44,7 @@ class PostWidgetWorker @AssistedInject constructor(
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
                 putExtra(WidgetProvider.EXTRA_POST, post)
             })
+
+    private val WorkerParameters.widgetId: Int
+        get() = this.inputData.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
 }
-
-private val WorkerParameters.widgetId: Int
-    get() = this.inputData.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-
