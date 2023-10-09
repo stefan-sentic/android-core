@@ -79,7 +79,6 @@ class WidgetProvider : AppWidgetProvider() {
         options: Bundle?
     ) {
         Log.d(TAG, "onAppWidgetOptionsChanged: ")
-        //        context.publishRemoteView(context.getRemoteView(widgetId), widgetId)
     }
 
     private fun onCustomAction(context: Context, intent: Intent) {

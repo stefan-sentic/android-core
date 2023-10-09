@@ -19,8 +19,10 @@ package com.htecgroup.coresample.presentation.post
 import android.os.Parcelable
 import com.htecgroup.coresample.domain.user.User
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class UserView(
     val id: Int = 0,
     val name: String = "",

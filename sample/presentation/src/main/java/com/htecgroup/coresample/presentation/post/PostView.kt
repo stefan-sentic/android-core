@@ -19,9 +19,11 @@ package com.htecgroup.coresample.presentation.post
 import android.os.Parcelable
 import com.htecgroup.coresample.domain.post.Post
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import java.util.Locale
 
 @Parcelize
+@Serializable
 data class PostView(
     val id: Int = 0,
     var title: String = "",

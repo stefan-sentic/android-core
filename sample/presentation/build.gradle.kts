@@ -23,6 +23,7 @@ plugins {
     id(Plugins.junit5)
     id(Plugins.hilt)
     id(Plugins.kotlinParcelize)
+    kotlin(Plugins.serialization)
 }
 
 apply(from = Config.CoreSample.detekt)
@@ -91,7 +92,8 @@ dependencies {
     implementation(Libs.ui_tooling_preview)
     implementation(Libs.ui_tooling)
     implementation(Libs.accompanist_swiperefresh)
-	implementation(Libs.glance_appwidget)
+    implementation(Libs.glance_appwidget)
+    implementation(Libs.kotlinx_serialization_json)
 
     // Hilt
     implementation(Libs.hilt_android)

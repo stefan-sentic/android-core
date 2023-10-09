@@ -2,10 +2,9 @@ package com.htecgroup.coresample.presentation.post.widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
-import com.htecgroup.androidcore.domain.extension.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,16 +18,22 @@ class PostWidgetReceiver : GlanceAppWidgetReceiver() {
         appWidgetIds: IntArray
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        Log.d(TAG, "onUpdate: ")
+        logWidget("onUpdate: ")
         appWidgetIds.forEach { widgetId ->
-            PostGlanceWorker.enqueuePeriodic(context, widgetId)
+            PostGlanceWorker.enqueuePeriodic(
+                context = context,
+                glanceWidgetId = GlanceAppWidgetManager(context).getGlanceIdBy(widgetId).toString()
+            )
         }
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
         appWidgetIds.forEach { widgetId ->
-            PostGlanceWorker.cancelPeriodic(context, widgetId)
+            PostGlanceWorker.cancelPeriodic(
+                context = context,
+                glanceWidgetId = GlanceAppWidgetManager(context).getGlanceIdBy(widgetId).toString()
+            )
         }
     }
 }

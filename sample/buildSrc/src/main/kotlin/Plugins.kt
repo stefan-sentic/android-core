@@ -24,6 +24,7 @@ object Plugins {
 	const val kotlinJvm = "kotlin"
 	const val kapt = "kapt"
 	const val ksp = "com.google.devtools.ksp"
+	const val serialization = "plugin.serialization"
 
 	const val junit5 = "de.mannodermaus.android-junit5"
 	const val firebaseAppDistribution = "com.google.firebase.appdistribution"

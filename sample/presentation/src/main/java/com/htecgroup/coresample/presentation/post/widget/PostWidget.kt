@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.AndroidResourceImageProvider
 import androidx.glance.GlanceComposable
 import androidx.glance.GlanceId
@@ -15,6 +13,7 @@ import androidx.glance.Image
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
+import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
@@ -23,57 +22,74 @@ import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
-import androidx.glance.state.GlanceStateDefinition
-import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontStyle
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
-import com.htecgroup.coresample.presentation.R
+import com.htecgroup.coresample.presentation.R.drawable
+import com.htecgroup.coresample.presentation.post.PostView
 import com.htecgroup.coresample.presentation.post.PostsActivity
 
 class PostWidget : GlanceAppWidget() {
 
     companion object {
-        const val KEY_POST_TITLE = "post_title"
-        const val KEY_POST_DESC = "post_description"
-        const val KEY_POST_AUTHOR = "post_author"
-        const val KEY_TIME = "time"
+        const val KEY_WIDGET_ID = "widget_id"
     }
 
-    override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
+    override val stateDefinition = PostWidgetStateDefinition
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        PostGlanceWorker.runOnce(context)
+        logWidget("provideGlance $id")
+        PostGlanceWorker.runOnce(context, id.toString())
 
         provideContent {
-            val state = currentState<Preferences>()
-            val postTitle = state[stringPreferencesKey(KEY_POST_TITLE)].orEmpty()
-            val postDesc = state[stringPreferencesKey(KEY_POST_DESC)].orEmpty()
-            val postAuthor = state[stringPreferencesKey(KEY_POST_AUTHOR)].orEmpty()
-            val time = state[stringPreferencesKey(KEY_TIME)].orEmpty()
+            logWidget("provideContent $id")
+            val state = currentState<WidgetState>()
 
             GlanceTheme {
-                WidgetContent(postTitle, postDesc, postAuthor, time)
+                WidgetContent(state)
             }
         }
     }
 
     @GlanceComposable
     @Composable
-    private fun WidgetContent(
-        title: String,
-        description: String,
-        postAuthor: String,
-        time: String
-    ) {
+    private fun WidgetContent(state: WidgetState) {
+        if (state.loading) {
+            logWidget("WidgetContent: loading")
+            WidgetLoading()
+        } else if (state.post == null) {
+            logWidget("WidgetContent: error")
+            WidgetError()
+        } else {
+            logWidget("WidgetContent: data (${state.post.title})")
+            WidgetData(state.post, state.time)
+        }
+    }
+
+    @Composable
+    fun WidgetLoading() {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = GlanceModifier.fillMaxSize()
+                .appWidgetBackground()
+                .background(GlanceTheme.colors.background)
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+
+    @Composable
+    private fun WidgetData(post: PostView, time: String) {
         Column(
             modifier = GlanceModifier
                 .appWidgetBackground()
@@ -91,7 +107,7 @@ class PostWidget : GlanceAppWidget() {
                 )
             )
             Text(
-                text = title,
+                text = post.title,
                 maxLines = 2,
                 modifier = GlanceModifier.clickable(actionStartActivity<PostsActivity>()),
                 style = TextStyle(
@@ -103,7 +119,7 @@ class PostWidget : GlanceAppWidget() {
             Text(
                 modifier = GlanceModifier.padding(vertical = 16.dp),
                 maxLines = 4,
-                text = description,
+                text = post.description,
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = GlanceTheme.colors.secondary
@@ -118,20 +134,35 @@ class PostWidget : GlanceAppWidget() {
                         .background(GlanceTheme.colors.primary)
                         .cornerRadius(8.dp)
                         .padding(horizontal = 8.dp, vertical = 2.dp),
-                    text = postAuthor,
+                    text = post.user?.name.orEmpty(),
                     style = TextStyle(
                         color = GlanceTheme.colors.onPrimary
                     )
                 )
                 Spacer(modifier = GlanceModifier.defaultWeight())
                 Image(
-                    provider = AndroidResourceImageProvider(R.drawable.ic_refresh),
+                    provider = AndroidResourceImageProvider(drawable.ic_refresh),
                     modifier = GlanceModifier
-                        .background(AndroidResourceImageProvider(R.drawable.bg_widget_button))
+                        .background(AndroidResourceImageProvider(drawable.bg_widget_button))
                         .clickable(actionRunCallback<RefreshAction>()),
                     contentDescription = "Refresh"
                 )
             }
+        }
+    }
+
+    @Composable
+    private fun WidgetError() {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = GlanceModifier.fillMaxSize()
+                .appWidgetBackground()
+                .background(GlanceTheme.colors.background)
+        ) {
+            Text(
+                text = "Unable to load data",
+                style = TextStyle(color = GlanceTheme.colors.error, fontSize = 20.sp)
+            )
         }
     }
 }
@@ -142,6 +173,6 @@ class RefreshAction : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters
     ) {
-        PostGlanceWorker.runOnce(context)
+        PostGlanceWorker.runOnce(context, glanceId.toString())
     }
 }

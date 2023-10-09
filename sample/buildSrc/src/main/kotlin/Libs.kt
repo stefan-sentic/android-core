@@ -154,6 +154,9 @@ public object Libs {
 
     public const val kluent_android: String = "org.amshove.kluent:kluent-android:_"
 
+    public const val org_jetbrains_kotlin_plugin_serialization_gradle_plugin: String =
+            "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:_"
+
     public const val kotlin_annotation_processing_gradle: String =
             "org.jetbrains.kotlin:kotlin-annotation-processing-gradle:_"
 
@@ -165,6 +168,11 @@ public object Libs {
     public const val kotlin_parcelize_runtime: String =
             "org.jetbrains.kotlin:kotlin-parcelize-runtime:_"
 
+    public const val kotlin_serialization_compiler_plugin_embeddable: String =
+            "org.jetbrains.kotlin:kotlin-serialization-compiler-plugin-embeddable:_"
+
+    public const val kotlin_stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib:_"
+
     public const val kotlinx_coroutines_android: String =
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:_"
 
@@ -173,6 +181,9 @@ public object Libs {
 
     public const val kotlinx_coroutines_test: String =
             "org.jetbrains.kotlinx:kotlinx-coroutines-test:_"
+
+    public const val kotlinx_serialization_json: String =
+            "org.jetbrains.kotlinx:kotlinx-serialization-json:_"
 
     public const val junit_jupiter_api: String = "org.junit.jupiter:junit-jupiter-api:_"
 
