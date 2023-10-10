@@ -43,6 +43,8 @@ public object Libs {
 
     public const val glance_appwidget: String = "androidx.glance:glance-appwidget:_"
 
+    public const val glance_material3: String = "androidx.glance:glance-material3:_"
+
     public const val androidx_hilt_hilt_compiler: String = "androidx.hilt:hilt-compiler:_"
 
     public const val hilt_navigation_compose: String = "androidx.hilt:hilt-navigation-compose:_"

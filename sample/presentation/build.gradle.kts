@@ -93,6 +93,7 @@ dependencies {
     implementation(Libs.ui_tooling)
     implementation(Libs.accompanist_swiperefresh)
     implementation(Libs.glance_appwidget)
+    implementation (Libs.glance_material3)
     implementation(Libs.kotlinx_serialization_json)
 
     // Hilt

@@ -16,11 +16,15 @@
 
 package com.htecgroup.coresample.presentation.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.glance.GlanceComposable
+import androidx.glance.GlanceTheme
+import androidx.glance.material3.ColorProviders
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -101,4 +105,21 @@ fun AppTheme(
         colorScheme = colors,
         content = content
     )
+}
+
+@Composable
+fun WidgetTheme(
+    useDynamicColors: Boolean = true,
+    content: @GlanceComposable @Composable () -> Unit
+) {
+    val isDynamicColorAvailable = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
+    if (useDynamicColors && isDynamicColorAvailable) {
+        GlanceTheme(content = content)
+    } else {
+        GlanceTheme(
+            colors = ColorProviders(light = LightColors, dark = DarkColors),
+            content = content
+        )
+    }
 }

@@ -16,7 +16,9 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.htecgroup.coresample.domain.post.usecase.GetCommentsForPost
 import com.htecgroup.coresample.domain.post.usecase.GetRandomPostFromNetwork
+import com.htecgroup.coresample.presentation.post.toCommentView
 import com.htecgroup.coresample.presentation.post.toPostView
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -31,7 +33,8 @@ import java.util.concurrent.TimeUnit.MINUTES
 class PostGlanceWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val params: WorkerParameters,
-    private val getRandomPost: GetRandomPostFromNetwork
+    private val getRandomPost: GetRandomPostFromNetwork,
+    private val getCommentsForPost: GetCommentsForPost
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -82,12 +85,19 @@ class PostGlanceWorker @AssistedInject constructor(
             logWidget("work fetched the data ${params.widgetId}")
 
             if (postResult.isSuccess) {
+                val post = postResult.getOrNull()?.toPostView()
+                val postComments =
+                    post?.let { getCommentsForPost(it.id) }
+                        ?.getOrNull()
+                        ?.map { it.toCommentView() }
+                        ?: emptyList()
                 updateWidget(
                     context,
                     WidgetState(
                         widgetId = params.widgetId,
                         loading = false,
-                        post = postResult.getOrNull()?.toPostView(),
+                        post = post,
+                        comments = postComments,
                         time = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
                     ),
                 )

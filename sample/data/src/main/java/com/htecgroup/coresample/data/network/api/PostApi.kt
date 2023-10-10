@@ -16,12 +16,14 @@
 
 package com.htecgroup.coresample.data.network.api
 
+import com.htecgroup.coresample.data.network.entities.CommentRaw
 import com.htecgroup.coresample.data.network.entities.PostRaw
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PostApi {
 
@@ -33,4 +35,7 @@ interface PostApi {
 
     @POST("posts")
     suspend fun addPost(@Body post: PostRaw): Response<PostRaw>
+
+    @GET("comments")
+    suspend fun getComments(@Query("postId") postId: Int): Response<List<CommentRaw>>
 }

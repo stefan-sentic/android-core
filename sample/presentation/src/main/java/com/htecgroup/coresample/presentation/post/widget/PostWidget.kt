@@ -2,6 +2,7 @@ package com.htecgroup.coresample.presentation.post.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.AndroidResourceImageProvider
@@ -10,15 +11,19 @@ import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
+import androidx.glance.LocalSize
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.appWidgetBackground
 import androidx.glance.appwidget.cornerRadius
+import androidx.glance.appwidget.lazy.LazyColumn
+import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
@@ -36,14 +41,22 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.htecgroup.coresample.presentation.R.drawable
+import com.htecgroup.coresample.presentation.post.CommentView
 import com.htecgroup.coresample.presentation.post.PostView
 import com.htecgroup.coresample.presentation.post.PostsActivity
+import com.htecgroup.coresample.presentation.theme.WidgetTheme
 
 class PostWidget : GlanceAppWidget() {
 
     companion object {
         const val KEY_WIDGET_ID = "widget_id"
+
+        private val SIZE_SMALL = DpSize(150.dp, 150.dp)
+        private val SIZE_MEDIUM = DpSize(250.dp, 250.dp)
+        private val SIZE_LARGE = DpSize(350.dp, 350.dp)
     }
+
+    override val sizeMode = SizeMode.Responsive(setOf(SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE))
 
     override val stateDefinition = PostWidgetStateDefinition
 
@@ -55,7 +68,7 @@ class PostWidget : GlanceAppWidget() {
             logWidget("provideContent $id")
             val state = currentState<WidgetState>()
 
-            GlanceTheme {
+            WidgetTheme {
                 WidgetContent(state)
             }
         }
@@ -72,7 +85,7 @@ class PostWidget : GlanceAppWidget() {
             WidgetError()
         } else {
             logWidget("WidgetContent: data (${state.post.title})")
-            WidgetData(state.post, state.time)
+            WidgetData(state.post, state.comments, state.time)
         }
     }
 
@@ -89,7 +102,24 @@ class PostWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun WidgetData(post: PostView, time: String) {
+    private fun WidgetError() {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = GlanceModifier.fillMaxSize()
+                .appWidgetBackground()
+                .background(GlanceTheme.colors.errorContainer)
+        ) {
+            Text(
+                text = "Unable to load data",
+                style = TextStyle(color = GlanceTheme.colors.error, fontSize = 20.sp)
+            )
+        }
+    }
+
+    @Composable
+    private fun WidgetData(post: PostView, postComments: List<CommentView>, time: String) {
+        val size = LocalSize.current
+
         Column(
             modifier = GlanceModifier
                 .appWidgetBackground()
@@ -108,7 +138,7 @@ class PostWidget : GlanceAppWidget() {
             )
             Text(
                 text = post.title,
-                maxLines = 2,
+                maxLines = if (size.height < SIZE_MEDIUM.height) 1 else 2,
                 modifier = GlanceModifier.clickable(actionStartActivity<PostsActivity>()),
                 style = TextStyle(
                     fontSize = 18.sp,
@@ -118,16 +148,16 @@ class PostWidget : GlanceAppWidget() {
             )
             Text(
                 modifier = GlanceModifier.padding(vertical = 16.dp),
-                maxLines = 4,
+                maxLines = if (size.height < SIZE_MEDIUM.height) 3 else 5,
                 text = post.description,
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = GlanceTheme.colors.secondary
                 )
             )
-            Spacer(modifier = GlanceModifier.defaultWeight())
             Row(
                 modifier = GlanceModifier.fillMaxWidth()
+                    .padding(vertical = 6.dp)
             ) {
                 Text(
                     modifier = GlanceModifier
@@ -148,21 +178,37 @@ class PostWidget : GlanceAppWidget() {
                     contentDescription = "Refresh"
                 )
             }
-        }
-    }
 
-    @Composable
-    private fun WidgetError() {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = GlanceModifier.fillMaxSize()
-                .appWidgetBackground()
-                .background(GlanceTheme.colors.background)
-        ) {
-            Text(
-                text = "Unable to load data",
-                style = TextStyle(color = GlanceTheme.colors.error, fontSize = 20.sp)
-            )
+            if (size.height >= SIZE_MEDIUM.height) {
+                Text(
+                    text = "Comments:",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                LazyColumn {
+                    items(postComments) { comment ->
+                        Column(modifier = GlanceModifier.padding(8.dp)) {
+                            Text(
+                                text = "${comment.email}:",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontStyle = FontStyle.Italic,
+                                    fontSize = 12.sp
+                                )
+                            )
+                            Text(
+                                text = comment.body,
+                                maxLines = 2,
+                                style = TextStyle(
+                                    fontSize = 14.sp
+                                )
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

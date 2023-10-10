@@ -26,9 +26,11 @@ import com.htecgroup.coresample.data.db.entities.PostEntity
 import com.htecgroup.coresample.data.db.entities.toPost
 import com.htecgroup.coresample.data.db.entities.toPostEntity
 import com.htecgroup.coresample.data.network.api.PostApi
+import com.htecgroup.coresample.data.network.entities.toComment
 import com.htecgroup.coresample.data.network.entities.toPost
 import com.htecgroup.coresample.data.network.entities.toPostEntity
 import com.htecgroup.coresample.data.network.entities.toPostRaw
+import com.htecgroup.coresample.domain.post.Comment
 import com.htecgroup.coresample.domain.post.Post
 import com.htecgroup.coresample.domain.post.PostRepository
 import kotlinx.coroutines.flow.Flow
@@ -49,6 +51,10 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getPostFromNetwork(postId: Int): Result<Post> =
         safeApiCall { postApi.getPost(postId) }
             .map { it.toPost() }
+
+    override suspend fun getComments(postId: Int): Result<List<Comment>> =
+        safeApiCall { postApi.getComments(postId) }
+            .map { comments -> comments.map { it.toComment() } }
 
     override fun getPost(postId: Int): Flow<Result<Post?>> =
         postDao.get(postId.toLong()).mapWrapResult { it?.toPost() }

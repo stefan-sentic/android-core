@@ -22,6 +22,8 @@ interface PostRepository {
 
     suspend fun getPostFromNetwork(postId: Int): Result<Post>
 
+    suspend fun getComments(postId: Int):Result<List<Comment>>
+
     fun getPosts(): Flow<Result<List<Post>?>>
 
     suspend fun removePosts(): Result<Unit>
